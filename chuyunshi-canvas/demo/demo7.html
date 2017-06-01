@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>6</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body class="hidden re">
+<canvas class="ab hide" id="canvascopy"></canvas>
+<canvas class="ab" id="canvas"></canvas>
+
+<script src="../js/zepto.min.1.js"></script>
+<script src="../js/createjs-2015.11.26.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var pageH,pageW;
+        page= {
+            init: function () {
+                ////阻止body滑动
+                $('body').on("touchmove", function (e) {
+                    e.preventDefault();
+                });
+                window.addEventListener("touchstart", function (e) {
+                    e.preventDefault();
+                });
+                $(window).resize(function () {
+                    page.resize();
+                });
+                page.num=0;
+                //用来标记点击的
+                page.click = 0;
+                //原始图片的宽高
+                page.imgW = 750;
+                page.imgH = 1334;
+                //图片的份数，这里是20*25份
+                page.numW= 20;
+                page.numH = 25;
+                //用来存放每一个小图片的属性
+                page.picArray=[];
+
+                page.resize();
+                page.canVas.init();
+            },
+            canVas:{
+                init:function(){
+                    page.canVas.getImagedata();
+                    $("body").on("click",function(){
+                        page.num = 0 ;
+                        page.click=!page.click;
+                      /*  if(page.click==false){
+                            for(var i=0; i<page.picArray.length; i++){
+                                page.picArray[i][0].alpha = Math.random();
+
+                                page.picArray[i][0].scaleX = (1-Math.random()*2);
+                                page.picArray[i][0].scaleY = (1-Math.random()*2);
+                            }
+                        }*/
+                        page.num=0;
+                    })
+                },
+                tick:function(){
+                    if(page.click==0){
+                        page.canVas.animate2();
+                    }else {
+                        page.canVas.animate();
+                    }
+                    stage.update();
+                },
+                animate:function(){
+                    for(var i=0; i<page.picArray.length; i++){
+                        page.picArray[i][0].x -= page.picArray[i][3]*30;
+                       /* if(page.picArray[i][0].x<0){
+                            page.picArray[i][0].x = pageW
+                        }
+                        if(page.picArray[i][0].x>pageW){
+                            page.picArray[i][0].x=0
+                        }*/
+
+                        page.picArray[i][0].y -= page.picArray[i][4]*30;
+                       /* if(page.picArray[i][0].y<0){
+                            page.picArray[i][0].y = pageH
+                        }
+                        if(page.picArray[i][0].y>pageH){
+                            page.picArray[i][0].y=0
+                        }*/
+                    }
+                },
+                animate2:function(){
+                    page.num+=10;
+                    if(page.num>=page.picArray.length){
+                        page.num = page.picArray.length
+                    }
+
+                    for(var i=0; i<page.num; i++){
+
+                        page.picArray[i][0].x -= (page.picArray[i][0].x-(page.picArray[i][1]))/30;
+                        page.picArray[i][0].y -= (page.picArray[i][0].y-(page.picArray[i][2]))/30;
+                        page.picArray[i][0].alpha -= (page.picArray[i][0].alpha-1)/30;
+
+                       // page.picArray[i][0].rotation -= (page.picArray[i][0].rotation-0)/30;
+                        page.picArray[i][0].scaleX -= (page.picArray[i][0].scaleX-page.scaleX)/30;
+                        page.picArray[i][0].scaleY -= (page.picArray[i][0].scaleY-page.scaleY)/30
+                    }
+                },
+                getImagedata:function(){
+                    stage = new createjs.Stage("canvas");
+                    //var bg = new createjs.Bitmap("./../img/001.jpg");
+                    for(i=0;i<page.numW;i++){
+                        for(j=0;j<page.numH;j++){
+                            var bg = new createjs.Bitmap("./../img/001.jpg");
+                            var rect = new createjs.Rectangle(i*page.imgW/page.numW,j*page.imgH/page.numH,page.imgW/page.numW,page.imgH/page.numH);
+                            bg.sourceRect = rect;
+                            bg.x=pageW*Math.random();
+                            bg.y=pageH*Math.random();
+                            var a =i*page.imgW/page.numW*page.scaleX;
+                            var b =j*page.imgH/page.numH*page.scaleY;
+                            var movex = (1-Math.random()*2);
+                            var movey = (1-Math.random()*2);
+                            bg.scaleX=Math.random();
+                            bg.scaleY=Math.random();
+                           // bg.rotation=Math.random()*90;
+                            bg.alpha = Math.random()
+                            page.picArray.push([bg,a,b,movex,movey]);
+                            stage.addChild(bg);
+                        }
+                    }
+                    //帧率
+                    createjs.Ticker.setFPS(60);
+                    //更新阶段将呈现下一帧
+                    createjs.Ticker.addEventListener("tick", page.canVas.tick);
+                }
+            },
+            resize: function () {
+                pageH = $(window).height();
+                pageW = $(window).width();
+                $(".page").width(pageW).height(pageH);
+                $('canvas').attr('width', pageW).attr('height', pageH)
+                page.scaleX=pageW/page.imgW;
+                page.scaleY=pageH/page.imgH;
+            }
+        };
+        page.init();
+    });
+</script>
+</body>
+</html>

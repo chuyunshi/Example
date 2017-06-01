@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>写字板</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/index-write.css"/>
+</head>
+<body>
+
+<div class="write-content ab">
+    <div class="ab header">
+        <img class="ab " src="img/yes.png" alt=""/>
+        <img class="ab hide" src="img/delete.png" alt=""/>
+    </div>
+    <div class="write-title ab ">
+        <ul class="write-ul">
+            <li class="color li_1 bg1 re">
+                <img class="ab" src="img/color.png" alt=""/>
+                <img class="ab" src="img/color.png" alt=""/>
+                <ul class="change-color ab hide">
+                    <li data-canvas="white" class="white color-size fl"></li>
+                    <li data-canvas="black" class="black color-size fl"></li>
+                    <li data-canvas="red" class="red color-size fl"></li>
+                    <li data-canvas="yellow" class="yellow color-size fl"></li>
+                    <li data-canvas="blue" class="blue color-size fl"></li>
+                </ul>
+            </li>
+            <li class="width  li_1 bg1 re">
+                <img class="ab" src="img/width1.png" alt=""/>
+                <img class="ab" src="img/width.png" alt=""/>
+                <ul class="change-width ab hide" >
+                    <li data-canvas="1" class="width_1 width-size"></li>
+                    <li data-canvas="3" class="width_2 width-size"></li>
+                    <li data-canvas="5" class="width_3 width-size"></li>
+                    <li data-canvas="7" class="width_4 width-size"></li>
+                    <li data-canvas="9" class="width_5 width-size"></li>
+                </ul>
+            </li>
+            <li class="write  li_1 bg1 re">
+                <img class="ab" src="img/write1.png" alt=""/>
+                <img class="ab" src="img/write.png" alt=""/>
+
+            </li>
+            <li class="rubber  li_1 bg1 re">
+                <img class="ab" src="img/rubber1.png" alt=""/>
+                <img class="ab" src="img/rubber.png" alt=""/>
+            </li>
+            <li class="_left  li_1 bg1 re">
+                <img class="ab" src="img/left1.png" alt=""/>
+                <img class="ab" src="img/left.png" alt=""/>
+            </li>
+            <li class="_right  li_1 bg1 re">
+                <img class="ab" src="img/right1.png" alt=""/>
+                <img class="ab" src="img/right.png" alt=""/>
+            </li>
+            <li class="save  li_1 bg1 re">
+                <img class="ab" src="img/save1.png" alt=""/>
+                <img class="ab" src="img/save.png" alt=""/>
+
+            </li>
+            <li class="clear  li_1 bg1 re ">
+                <img class="ab" src="img/clear1.png" alt=""/>
+                <img class="ab" src="img/clear.png" alt=""/>
+            </li>
+        </ul>
+
+    </div>
+    <div class="write-body ">
+        <canvas   id="canvas" class="ab">
+        </canvas>
+        <canvas   id="canvas_bak" class="ab">
+        </canvas>
+    </div>
+
+    <div class="saveImg ab" id="showImg">
+        <img id="img" src="" alt="">
+    </div>
+
+</div>
+
+
+
+</body>
+</html>
+<script src="js/zepto.min.js"></script>
+<script src="js/index-write.js"></script>

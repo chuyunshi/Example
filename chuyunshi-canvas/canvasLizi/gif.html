@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+
+        .page{
+            position: relative;
+        }
+        .gif{
+            position: absolute;
+            width:50%;
+            height:34%
+        }
+        .gif1{
+            left:0;
+            top:0;
+        }
+        .gif2{
+            left:50%;
+            top:0;
+        }
+        .gif3{
+            top:33%;
+            left:0
+        }
+        .gif4{
+            top:33%;
+            left:50%;
+        }
+        .gif5{
+            top:66%;
+            left:0;
+        }
+        .gif6{
+            top:66%;
+            left:50%
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <img class="gif gif1" src="../img/starBg.gif" alt=""/>
+    <img class="gif gif2" src="../img/starBg.gif" alt=""/>
+    <img class="gif gif3" src="../img/starBg.gif" alt=""/>
+    <img class="gif gif4" src="../img/starBg.gif" alt=""/>
+    <img class="gif gif5" src="../img/starBg.gif" alt=""/>
+    <img class="gif gif6" src="../img/starBg.gif" alt=""/>
+</div>
+
+</body>
+<script src="../js/zepto.min.1.js"></script>
+<script>
+
+    $(document).ready(function(){
+        var pageH,pageW;
+        page= {
+            init: function () {
+                ////阻止body滑动
+                $('body').on("touchmove", function (e) {
+                    e.preventDefault();
+                });
+                window.addEventListener("touchstart", function (e) {
+                    //e.preventDefault();
+                });
+
+                $(window).resize(function () {
+                    page.resize();
+                });
+
+                page.resize();
+
+            },
+
+            resize: function () {
+                pageH = $(window).height();
+                pageW = $(window).width();
+                $(".page").width(pageW).height(pageH);
+            }
+        };
+        page.init();
+    });
+
+</script>
+</html>

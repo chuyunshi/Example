@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>1</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<canvas id="canVas" ></canvas>
+
+<img id="Img" class="hide" src="../img/123.png" alt=""/>
+
+<script src="../js/zepto.min.1.js"></script>
+<script>
+    /**
+     * Created by admin on 2017/5/25.
+     */
+    $(document).ready(function(){
+        var pageH,pageW;
+        page= {
+            init: function () {
+                ////阻止body滑动
+                $('body').on("touchmove", function (e) {
+                    e.preventDefault();
+                });
+                window.addEventListener("touchstart", function (e) {
+                    //e.preventDefault();
+                });
+                $(window).resize(function () {
+                    page.resize();
+                });
+                page.resize();
+                page.canVas.init();
+            },
+            canVas:{
+                init:function(){
+                    //阴影
+                    //page.canVas.yinying();
+                    //渐变
+                    //page.canVas.jianbian();
+                    //平铺
+                    //page.canVas.pingpu();
+                },
+                yinying:function(){
+                    var c = document.getElementById("canVas");
+                    var ctx = c.getContext("2d");
+                    ctx.shadowBlur = 50;//阴影级别
+                    ctx.shadowColor = "black";//阴影颜色
+                    //ctx.shadowOffsetX = 20;//阴影水品位移
+                    //ctx.shadowOffsetY = 20;//阴影垂直位移
+                    var img = new Image();
+                    img.src="../img/123.png";
+                    img.onload = function(){
+                        ctx.drawImage(img,50,50,120,120)
+                    }
+                },
+                jianbian:function(){
+                    var c = document.getElementById("canVas");
+                    var ctx = c.getContext("2d");
+
+                    var grd = ctx.createLinearGradient(0,0,170,0)//渐变的开始结束点；
+                    grd.addColorStop(0,"#f00");
+                    grd.addColorStop(0.5,"#00f");
+                    grd.addColorStop(1,"#0f0");
+                    ctx.fillStyle = grd;
+                    ctx.strokeStyle=grd;
+                    ctx.fillRect(20,20,300,100)
+                    ctx.strokeRect(20,300,300,100)
+                },
+                pingpu:function(){
+                    var c = document.getElementById("canVas");
+                    var ctx = c.getContext("2d");
+                    //var Img = document.getElementById("Img");
+                    var Img = new Image();
+                    Img.src="../img/starBg.gif";
+                    Img.onload = function(){
+                        var pat = ctx.createPattern(Img,"repeat");
+                        ctx.rect(0,0,1000,1000);
+                        ctx.fillStyle = pat;
+                        ctx.fill();
+                    }
+                },
+
+            },
+            resize: function () {
+                pageH = $(window).height();
+                pageW = $(window).width();
+                $(".page").width(pageW).height(pageH);
+                $('canvas').attr('width', pageW).attr('height', pageH)
+            }
+        };
+        page.init();
+    });
+</script>
+</body>
+</html>

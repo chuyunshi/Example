@@ -1,0 +1,57 @@
+*{
+    margin:0;
+    padding:0;
+}
+ul li{
+    list-style: none;
+}
+body{
+    overflow: hidden;
+    text-align: center;
+}
+#canvas{
+    border: 1px solid #ddd;
+}
+.btn{
+    display: inline-block;
+    padding: 5px;
+    width:20%;
+}
+.saveImg{
+    display: none;
+    position:absolute;
+    left:0;
+    top:48%;
+}
+.saveImg img{
+
+    border: 1px solid #ddd;
+}
+@-webkit-keyframes down{
+    0%{
+        -webkit-transform: translate3d(0, -120%, 0);
+    }
+
+    100%{
+        -webkit-transform: translate3d(0, 0, 0);
+    }
+}
+.down{
+    -webkit-animation:  down 3s ease   ;
+}
+@-webkit-keyframes dou{
+    0%{
+        -webkit-transform: translate3d(0, 0%, 0);
+    }
+    50%{
+        -webkit-transform: translate3d(0, 1%, 0);
+    }
+    100%{
+        -webkit-transform: translate3d(0, 0%, 0);
+    }
+}
+.dou{
+    -webkit-animation:  dou 0.1s ease infinite   ;
+}
+
+

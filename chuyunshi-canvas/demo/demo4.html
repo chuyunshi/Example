@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>4</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body class="hidden re">
+<canvas class="ab hide" id="canvascopy"></canvas>
+<canvas class="ab" id="canvas"></canvas>
+
+<script src="../js/zepto.min.1.js"></script>
+<script src="../js/createjs-2015.11.26.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var pageH,pageW;
+        page= {
+            init: function () {
+                ////阻止body滑动
+                $('body').on("touchmove", function (e) {
+                    e.preventDefault();
+                });
+                window.addEventListener("touchstart", function (e) {
+                    e.preventDefault();
+                });
+                $(window).resize(function () {
+                    page.resize();
+                });
+                //设置粒子生成的图像的宽高
+                page.imgWidth = 100;
+                page.imgHeight = 100;
+                //存储用来生成图像的粒子的位置
+                page.dots=[];
+                page.click=0;
+                //用来存储圆点
+                page.circleArray=[];
+                //设置圆点数量
+                page.circleLength = 2000;
+                page.resize();
+                page.canVas.init();
+            },
+            canVas:{
+                init:function(){
+                    page.canVas.getImagedata();
+                    //page.canVas._canvas();
+                    //点击屏幕粒子聚合，分散
+                    $("body").on("click",function(){
+                        page.click=!page.click;
+                    })
+                },
+                _canvas:function(){
+                    stage = new createjs.Stage("canvas");
+                    //循环定义圆点的属性；
+                    for(var i= 0;i< page.circleLength;i++){
+                        //随机圆点颜色
+                        var color = "rgba(" + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + ","+ Math.floor(Math.random()*255) +","+Math.random()+")";
+                        //随机半径
+                        var radius = Math.random()+0.5;
+                        //随机初始位置
+                        var x = Math.random()*pageW;
+                        var y = Math.random()*pageH;
+                        //随机每个点的“移动速度跟方向”
+                        var movex = (1-Math.random()*2)*0.5;
+                        var movey = (1-Math.random()*2)*0.5;
+                        //画点
+                        var particle = page.canVas._drawCircle(color, radius,x,y,movex,movey);
+                        //将点存入数组，用于后面调用
+                        page.circleArray.push(particle);
+                        //添加形状实例到舞台显示列表
+                        stage.addChild(particle);
+                    }
+                    //帧率
+                    createjs.Ticker.setFPS(60);
+                    //更新阶段将呈现下一帧
+                    createjs.Ticker.addEventListener("tick", page.canVas.tick);
+
+                },
+                //圆点函数
+                _drawCircle:function(color, radius,x,y,movex,movey){
+                    var particle = new createjs.Shape();
+                    particle.graphics.beginFill(color).drawCircle(0, 0, radius);
+                    particle.x = x;
+                    particle.y = y;
+                    particle.movex = movex;
+                    particle.movey = movey;
+                    return particle;
+
+                },
+                //圆点移动
+                tick:function(){
+                    //粒子游离
+                    if(page.click==0){
+                        page.canVas.animate(0)
+                    }else{//粒子聚合成图像
+                        //粒子数大于图像有效像素点数
+                        if(page.dots.length<page.circleLength){
+                            page.canVas.animate2(page.dots.length)
+                            page.canVas.animate(page.dots.length)
+                        }else{//粒子数小于图像有效像素点数
+                            page.canVas.animate2(page.circleLength)
+                        }
+                    }
+                    //刷新
+                    stage.update();
+                },
+                //粒子生成图像的动画；
+                animate2:function(num){
+                    for(var j= 0;j< num;j++){
+                        //图像居中
+                        page.circleArray[j].x-=((page.circleArray[j].x-((page.dots[j][0])+(pageW/2-page.imgWidth/2)))/20);
+
+                        page.circleArray[j].y-=((page.circleArray[j].y-((page.dots[j][1])+(pageH/2-page.imgHeight/2)))/20);
+                    }
+                },
+                //初始动画；
+                animate:function(num){
+                    for(var i= num;i< page.circleLength;i++){
+                        //x轴方向，不同方向，不同速度移动
+                        page.circleArray[i].x+=page.circleArray[i].movex;
+                        //超出屏幕，从另一边出来，循环
+                        if(page.circleArray[i].x>=pageW){
+                            page.circleArray[i].x=0
+                        }else if(page.circleArray[i].x<=0){
+                            page.circleArray[i].x=pageW
+                        }
+                        //Y轴方向，不同方向，不同速度移动
+                        page.circleArray[i].y+=page.circleArray[i].movey;
+                        if(page.circleArray[i].y>=pageH){
+                            page.circleArray[i].y=0
+                        }else if(page.circleArray[i].y<=0){
+                            page.circleArray[i].y=pageH
+                        }
+                    }
+                },
+                //获取有效像素点位置
+                getImagedata:function(){
+                    //这里是原生的方法
+                    var c=document.getElementById("canvas");
+                    var ctx=c.getContext("2d");
+                    var img = new Image();
+                    img.src="../img/111.png";
+                    img.onload=function(){
+                        //canvas里面插入图像；
+                        ctx.drawImage(img,0,0,page.imgWidth,page.imgHeight);
+                        //获取图像每个像素的rgba
+                        var imgData=ctx.getImageData(0,0,page.imgWidth,page.imgHeight);
+                        //清除插入的图像后执行主函数
+                        ctx.clearRect(0,0,page.imgWidth,page.imgHeight);
+                        page.canVas._canvas();
+                        //将透明度大于50的像素点位置存入数组page.dots；
+                        //x+=2,y+=2;隔一个像素点取值。
+                        for(var x=0;x<page.imgWidth;x+=2){
+                            for(var y=0;y<=page.imgHeight;y+=2){
+                                var i = (y*imgData.width + x)*4;
+                                if(imgData.data[i+3] >= 50){
+                                    var dot=[];
+                                    dot[0]=x;
+                                    dot[1]=y;
+                                    page.dots.push(dot);
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            resize: function () {
+                pageH = $(window).height();
+                pageW = $(window).width();
+                $(".page").width(pageW).height(pageH);
+                $('canvas').attr('width', pageW).attr('height', pageH)
+            }
+        };
+        page.init();
+    });
+</script>
+</body>
+</html>
