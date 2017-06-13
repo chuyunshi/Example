@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<head>
+    <title>3D全景改进版</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta id="jdouview" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <meta name="format-detection"content="telephone=no">
+    <style>
+        body { background-color: #000000; margin: 0; cursor: move; overflow: hidden; }
+        .bg_section { width: 1026px; height: 1026px; background-size: cover; position: absolute; }
+        .bg_section .bg { position: absolute; width: 1026px; height: 1026px; }
+        .btn1{position: absolute;width: 74px;height: 96px;top:20%;left:40%;-webkit-transform: perspective(600px);background: url(img/btn1.png);background-size: 100% 100%;}
+        .btn2{position: absolute;width: 71px;height: 91px;top:30%;left:50%;-webkit-transform: perspective(600px);background: url(img/btn2.png);background-size: 100% 100%;}
+        .controlBtn{ width: 60px; height: 60px; position: fixed; z-index: 99999; left: 8%; top: 5%; }
+        .controlIcon{ background: url(img/controlIcon.png); background-size: 100% 100%; }
+        .controlIconae{ background: url(img/controlIconae.png); background-size: 100% 100%; }
+        @-webkit-keyframes bounceant1{
+            0%{-webkit-transform:translateY(0)}
+            50%{-webkit-transform:translateY(-12px)}
+            100%{-webkit-transform:translateY(0px)}
+        }
+        @keyframes bounceant1{
+            0%{transform:translateY(0)}
+            50%{transform:translateY(-12px)}
+            100%{transform:translateY(0px)}
+        }
+        .bounceant1{
+            z-index: 1000000;
+            -webkit-animation:bounceant1 3s infinite;animation:bounceant1 3s infinite}
+        p{
+            position: absolute;
+            z-index: 10;
+            font-size: 20px;
+            color:#fff;
+            top:-10px;;
+        }
+        #target{
+            width:100%;
+            height:100%;
+            background: rgba(0,0,0,0.2);
+            position: absolute;
+        }
+    </style>
+</head>
+<body id="target">
+
+<div id="controlBtn" class="controlBtn controlIconae"></div> <!-- 陀螺仪开启按钮 -->
+<p></p>
+<div id="pano" style="">
+    <!-- 正方体的六个面 -->
+    <div id="bg_section_0" class="bg_section bg_section_4 scale_test">
+        <img class="bg" src="img/right1.jpg" alt="">
+        <div class="btn1 bounceant1"></div> <!-- 可点击按钮1 -->
+    </div>
+    <div id="bg_section_1" class="bg_section bg_section_5 scale_test">
+        <img class="bg" src="img/left1.jpg" alt="">
+    </div>
+    <div id="bg_section_2" class="bg_section bg_section_2 scale_test">
+        <img class="bg" src="img/top1.jpg" alt="">
+    </div>
+    <div id="bg_section_3" class="bg_section bg_section_3 scale_test">
+        <img class="bg" src="img/bottom1.jpg" alt="">
+    </div>
+    <div id="bg_section_4" class="bg_section bg_section_1 scale_test">
+        <img class="bg" src="img/front1.jpg" alt="">
+        <div class="btn2 bounceant1"></div> <!-- 可点击按钮2 -->
+    </div>
+    <div id="bg_section_5" class="bg_section bg_section_0 scale_test">
+        <img class="bg" src="img/back1.jpg" alt="">
+    </div>
+</div>
+
+<script src="js/zepto.min.js"></script>
+<script src="js/touch.min.js"></script>
+<script src="js/three.min.js"></script>
+<script src="js/CSS3DRenderer.min.js"></script>
+<script src="js/DeviceOrientationControls.js"></script>
+<script>
+
+    var camera, scene, renderer;
+    var geometry, material, mesh;
+    var target = new THREE.Vector3();
+
+    var lon = 90, lat = 0;
+    var phi = 0, theta = 0;
+
+    var touchX, touchY;
+
+    init();
+    animate();
+
+    function init() {
+        /**
+         * 添加相机
+         * @type {THREE.PerspectiveCamera}
+         */
+        camera = new THREE.PerspectiveCamera(
+                75, // 相机视角的夹角
+                window.innerWidth / window.innerHeight,  // 相机画幅比
+                1, // 最近焦距
+                1000 // 最远焦距
+        );
+
+        /**
+         * 创建场景
+         * @type {THREE.Scene}
+         */
+        scene = new THREE.Scene();
+
+        /**
+         *正方体的6个面的资源及相关（坐标、旋转等）设置
+         */
+        var flipAngle = Math.PI, // 180度
+                rightAngle = flipAngle / 2, // 90度
+                tileWidth = 512;
+        var sides = [{
+            url: "images/right1.jpg", //right
+            position: [-tileWidth, 0, 0],
+            rotation: [0, rightAngle, 0]
+        }, {
+            url: "images/left1.jpg", //left
+            position: [tileWidth, 0, 0],
+            rotation: [0, -rightAngle, 0]
+        }, {
+            url: "images/top1.jpg", //top
+            position: [0, tileWidth, 0],
+            rotation: [rightAngle, 0, Math.PI]
+        }, {
+            url: "images/bottom1.jpg", //bottom
+            position: [0, -tileWidth, 0],
+            rotation: [-rightAngle, 0, Math.PI]
+        }, {
+            url: "images/front1.jpg", //front
+            position: [0, 0, tileWidth],
+            rotation: [0, Math.PI, 0]
+        }, {
+            url: "images/back1.jpg", //back
+            position: [0, 0, -tileWidth],
+            rotation: [0, 0, 0]
+        }];
+
+        for ( var i = 0; i < sides.length; i ++ ) {
+            var side = sides[ i ];
+            var element = document.getElementById("bg_section_"+i);
+            element.width = 1026;
+            element.height = 1026; // 2 pixels extra to close the gap.
+            // 添加一个渲染器
+            var object = new THREE.CSS3DObject( element );
+            object.position.fromArray( side.position );
+            object.rotation.fromArray( side.rotation );
+            scene.add( object );
+
+        }
+
+        renderer = new THREE.CSS3DRenderer(); // 定义渲染器
+        renderer.setSize( window.innerWidth, window.innerHeight ); // 定义尺寸
+        document.body.appendChild( renderer.domElement ); // 将场景到加入页面中
+
+        initDevices();
+        initMouseControl();
+
+    }
+
+    // 初始化控制器
+    function initMouseControl() {
+        // mouseControl = new THREE.OrbitControls(camera);
+        document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+        document.addEventListener( 'wheel', onDocumentMouseWheel, false );
+        document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+        document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+        document.addEventListener( 'touchend',  onDocumentTouchEnd, false );
+
+        window.addEventListener( 'resize', onWindowResize, false );
+
+    }
+
+    var controlsBtn= document.getElementById("controlBtn"); // 控制陀螺仪开关的按钮
+    var isDeviceing = false; // 陀螺仪状态
+    controlsBtn.addEventListener("touchend", controlDevice, true);
+    isDeviceing == true ? $("#controlBtn").addClass("controlIconae") : $("#controlBtn").addClass("controlIcon");
+    // 初始化陀螺仪
+    function initDevices() {
+        deviceControl = new THREE.DeviceOrientationControls(camera);
+    }
+    /* 控制陀螺仪 */
+    function controlDevice(event) {
+        if (isDeviceing == true) {
+            isDeviceing = false;
+            //关闭陀螺仪
+            $("#controlBtn").removeClass("controlIcon").addClass("controlIconae");
+        } else {
+            isDeviceing = true;
+            //开启陀螺仪
+            $("#controlBtn").removeClass("controlIconae").addClass("controlIcon");
+        }
+    }
+
+    /**
+     * 窗体大小改变
+     */
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+    }
+
+    /*
+     相机焦点跟着鼠标或手指的操作移动
+     */
+    function onDocumentMouseDown( event ) {
+        event.preventDefault();
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+
+    }
+
+    function onDocumentMouseMove( event ) {
+        var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+        var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+        lon -= movementX * 0.1;
+        lat += movementY * 0.1;
+    }
+
+    function onDocumentMouseUp( event ) {
+        document.removeEventListener( 'mousemove', onDocumentMouseMove );
+        document.removeEventListener( 'mouseup', onDocumentMouseUp );
+    }
+
+    /**
+     * 鼠标滚轮改变相机焦距
+     */
+    function onDocumentMouseWheel( event ) {
+        camera.fov += event.deltaY * 0.05;
+        console.log(camera.fov);
+        camera.updateProjectionMatrix();
+    }
+    function pinch() {
+        var target = document.getElementById("target");
+        target.style.webkitTransition = 'all ease 0.05s';
+        touch.on('#target', 'touchstart', function(ev){
+            ev.preventDefault();
+        });
+        var initialScale = 1;
+        var currentScale;
+        var s=camera.fov;
+        touch.on('#target', 'pinch', function(ev){
+            document.removeEventListener( 'touchmove', onDocumentTouchMove );
+            document.removeEventListener( 'touchend',  onDocumentTouchEnd );
+            console.log(ev)
+            currentScale = ev.scale-1;
+            currentScale = currentScale/20;
+            currentScale = initialScale + currentScale;
+            currentScale = currentScale > 2 ? 2 : currentScale;
+            currentScale = currentScale < 0.8 ? 0.8 : currentScale;
+            //this.style.webkitTransform = 'scale(' + currentScale + ')';
+            camera.fov =s/currentScale;
+            camera.updateProjectionMatrix();
+            initialScale = currentScale;
+            $("p").html("缩放比例："+initialScale)
+        });
+        touch.on('#target', 'pinchend', function(ev){
+            setTimeout(function(){
+                document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+                document.addEventListener( 'touchend',  onDocumentTouchEnd, false );
+            },500);
+
+        })
+    }
+    pinch();
+
+
+
+    var start_time=0,time_length=0,start_x=0,start_y=0,move_length_x=0,move_length_y=0,flag=0;
+    function onDocumentTouchStart( event ) {
+        event.preventDefault();
+        var touch = event.touches[ 0 ];
+        touchX = touch.screenX;
+        touchY = touch.screenY;
+        start_x = touch.screenX;
+        start_y = touch.screenY;
+        start_time = new Date();
+    }
+
+    function onDocumentTouchMove( event ) {
+        event.preventDefault();
+        var touch = event.touches[ 0 ];
+        lon -= ( touch.screenX - touchX ) * 0.2;
+        lat += ( touch.screenY - touchY ) * 0.2;
+        touchX = touch.screenX;
+        touchY = touch.screenY;
+        move_length_x = touch.screenX-start_x;
+        move_length_y = touch.screenY-start_y
+
+    }
+    function onDocumentTouchEnd( event ) {
+        event.preventDefault();
+        time_length = new Date()-start_time;
+
+        var a=(move_length_x/time_length)*2,
+                b=(move_length_y/time_length)*2;
+        a>0 ? flag=1:flag=0;
+        var endTime = setInterval(function(){
+            a=a/1.2;
+            b=b/1.2;
+            lon -=a;
+            lat +=b;
+            if(Math.abs(a)<0.01&&Math.abs(b)<0.01){
+                clearInterval(endTime);
+            }
+        },50)
+
+
+    }
+
+    /**
+     * 实时渲染函数
+     */
+    //var _beta=0; var _alpha=0;
+    var _alpha=0,_beta=0;
+    function Device () {
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', deviceMotionHandler, false);
+        }
+        var x = 0,
+                y = 0,
+                z = 0,
+                lx = 0,
+                ly = 0,
+                speed = 0.02,
+                //p2Move1 = $(".p3_move_1"),
+                //p2Move2 = $(".p3_move_2"),
+                //p2Move3 = $(".p3_move_3"),
+                mx,my;
+
+
+        function deviceMotionHandler(eventData) {
+            var acceleration = eventData.rotationRate;
+            x = acceleration.alpha;
+            y = acceleration.beta;
+            if (Math.abs(lx - x) > speed) {
+                mx = x *2;
+                my = y *2;
+                if(isDeviceing == false){
+
+                }else{
+                    lon -=my;
+                    lat +=mx;
+                }
+                lx = x;
+                ly = y;
+            }
+        }
+    }
+    Device ();
+    function animate() {
+        //isDeviceing == false ? initMouseControl() : deviceControl.update();
+       // _beta += deviceControl.beta;
+        //_alpha += deviceControl.alpha
+        requestAnimationFrame(animate);
+        // lon = Math.max(-180, Math.min(180, lon));//限制固定角度内旋转
+
+        flag ==0?lon += 0.1:lon -= 0.1;//自动旋转
+
+        lat = Math.max(-90, Math.min(89, lat)); //限制固定角度内旋转
+        phi = THREE.Math.degToRad(90 - lat);
+        theta = THREE.Math.degToRad(lon+180);
+        target.x = Math.sin(phi) * Math.cos(theta);
+        target.y = Math.cos(phi);
+        target.z = Math.sin(phi) * Math.sin(theta);
+        camera.lookAt( target );
+        camera.updateProjectionMatrix();
+        //console.log(deviceControl.alpha)
+        //console.log(deviceControl.beta);
+        //deviceControl.update();
+        //initMouseControl();
+        //isDeviceing == false ? initMouseControl() : deviceControl.update();
+        renderer.render(scene, camera);
+    }
+
+    $('.btn1').on('touchstart',function(){
+        alert('第一个按钮被点击了');
+    });
+    $('.btn2').on('touchstart',function(){
+        alert('第二个按钮被点击了');
+    });
+
+</script>
+</body>
+</html>
