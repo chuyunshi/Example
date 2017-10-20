@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>图片自适应</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .thisautoBox{
+            float: left;
+            width:20%;
+            height:200px;
+            border:1px solid #333;
+            margin: 2%;
+            overflow: hidden;
+            position: relative;
+        }
+        .thisautoBox img{
+            position: absolute;
+            left:50%;
+            top:50%;
+            transform: translate(-50%,-50%);
+        }
+    </style>
+</head>
+<body>
+<div class="thisautoBox">
+    <img src="img/1.jpg" alt=""/>
+</div>
+<div class="thisautoBox">
+    <img src="img/2.jpg" alt=""/>
+</div>
+<div class="thisautoBox">
+    <img src="img/1.jpg" alt=""/>
+</div>
+<div class="thisautoBox">
+    <img src="img/2.jpg" alt=""/>
+</div>
+<div class="thisautoBox">
+    <img src="img/1.jpg" alt=""/>
+</div>
+<div class="thisautoBox">
+    <img src="img/2.jpg" alt=""/>
+</div>
+<script src="js/zepto.min.1.js"></script>
+<script>
+    $(document).ready(function(){
+        page= {
+            init: function () {
+                page._box = $(".thisautoBox");
+                page.pichw=[];//用于保存图片的宽高比，固定数据
+                page.boxhw=[];//用于保存外框的宽高比，实时数据。
+                page.picauto.init();
+                $(window).resize(function () {
+                    page.resize();
+                });
+                page.resize();
+            },
+            picauto:{
+                init:function(){
+                    page.picauto.getpichw();
+                },
+                getpichw:function(){
+                    var _width,_height;
+                    for(var i= 0;i<page._box.length;i++){
+                        _width=page._box.eq(i).find("img").width();
+                        _height=page._box.eq(i).find("img").height();
+                        page.pichw[i]=(_width/_height).toFixed(4);
+                    }
+                },
+                getboxhw:function(){
+                    var _width,_height;
+                    for(var i= 0;i<page._box.length;i++){
+                        _width=page._box.eq(i).width();
+                        _height=page._box.eq(i).height();
+                        page.boxhw[i]=(_width/_height).toFixed(4);
+                    }
+                },
+                picSizeChange:function(){
+                    for(var i= 0;i<page._box.length;i++){
+                        if(page.pichw[i]>page.boxhw[i]){
+                            page._box.eq(i).find("img").css({
+                                "width":"100%",
+                                "height":"auto"
+                            })
+                        }else{
+                            page._box.eq(i).find("img").css({
+                                "width":"auto",
+                                "height":"100%"
+                            })
+                        }
+                    }
+                }
+            },
+            resize: function () {
+                page.picauto.getboxhw();
+                page.picauto.picSizeChange()
+            }
+        };
+        page.init();
+    });
+</script>
+</body>
+</html>
