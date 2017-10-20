@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>应收账款</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/swiper.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <style>
+        .bottom-tab{
+            width:16rem;
+            position: fixed;
+            bottom:0;
+
+        }
+        .bottom-tab li{
+            display: inline-block;
+            box-sizing: border-box;
+            width:33.3%;
+            height:2rem;
+            line-height: 2rem;
+            border:1px solid #999;
+            text-align: center;
+            font-size:0.8rem;
+        }
+        .active1{
+            background: #999;
+            color:#fff;
+        }
+        .top{
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-top:0.5rem;
+
+        }
+        .top-tab li{
+            display: inline-block;
+            box-sizing: border-box;
+            width:20%;
+            text-align: center;
+            height:1.2rem;
+        }
+        .active2{
+            color:green;
+            border-bottom:2px solid green;
+        }
+        .time{
+            top:0;
+            right:0.5rem;
+        }
+        .nav-box{
+            height:2.5rem;
+            background: #eee;
+        }
+        .ul-nav li{
+            display: inline-block;
+            box-sizing: border-box;
+            width:20%;
+            margin:0.5rem 2.5%;
+            height:1.5rem;
+            line-height:1.5rem;
+            text-align: center;
+            border-radius:5px;
+            font-size:0.7rem ;
+            background: #fff;
+        }
+        .active3{
+            color:#fff;
+            background: dodgerblue!important;
+
+        }
+        .content{
+            height:calc(100vh - 6.2rem)
+        }
+        .content img{
+            width:100%;
+            height:100%;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+<div class="re top">
+    <ul class="top-tab re">
+        <li class="active2">大电票</li><li>小电票</li><li>纸票</li>
+    </ul>
+    <span class="ab time">2017-10-16</span>
+</div>
+<div class="nav-box">
+    <ul class="ul-nav">
+        <li class="active3">买断</li><li>查打</li><li>直贴</li><li>带票</li>
+    </ul>
+</div>
+
+<div class="content re">
+    <img class="ab" src="img/0.png" alt=""/>
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+    <ul class="bottom-tab">
+        <li class="active1">报价</li><li>库存</li><li>我</li>
+    </ul>
+</div>
+</div>
+
+<script src="js/zepto.min.1.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/rem.js"></script>
+<script src="js/index.js"></script>
+<script>
+    $(function(){
+        $(".ul-nav li").on("click",function(){
+            $(this).addClass("active3").siblings().removeClass("active3")
+        })
+        $(".top-tab li").on("click",function(){
+            $(this).addClass("active2").siblings().removeClass("active2")
+        })
+        $(".bottom-tab li").on("click",function(){
+            $(this).addClass("active1").siblings().removeClass("active1")
+        })
+    })
+</script>
+</body>
+</html>
