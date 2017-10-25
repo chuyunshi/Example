@@ -599,7 +599,7 @@ body img{
 }
 .input-text textarea{
     width:100%;
-    height:100%;
+    height:70%;
     border:none;
     background-color: transparent;
     font-size:0.5973rem;
