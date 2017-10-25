@@ -17,6 +17,7 @@ $(document).ready(function(){
             page.resize();
             //page._swiper.init();
             page._menu.init();
+            page._index.init()
             //监听屏幕滑动
             $(window).scroll(function(event){});
         },
@@ -33,6 +34,7 @@ $(document).ready(function(){
                 console.log(123123);
             }
         },
+        //所有页菜单点击集合
         _menu:{
             init:function(){
                 page._menu._btnclick();
@@ -93,7 +95,65 @@ $(document).ready(function(){
                 })
             }
         },
+        _news_select:{
+            init:function(){
+                page._news_select._selectBox_showhide()
+                page._news_select._select_btn()
+                page._news_select._search_news()
 
+            },
+            _selectBox_showhide:function(){
+                $(".news-select").on("click",function(){
+                    $(".search-box").show();
+                    $(window).scrollTop(0);
+                    $('body').on("touchmove", function (e) {
+                        e.preventDefault();
+                    })
+                })
+                $(".search-box").on("click",function(){
+                    $(this).hide();
+                    $('body').off("touchmove");
+                })
+            },
+            _select_btn:function(){
+               $(".select-list li").on("click",function(){
+                   $(this).addClass("select-active").siblings().removeClass("select-active")
+                   return false;
+               })
+            },
+            _search_news:function() {
+                $(".select-complete").on("click", function () {
+                    var arr = []
+                    for (var i = 0; i < 3; i++) {
+                        arr[i] = $(".select-active").eq(i).text()
+                    }
+                    console.log(arr)
+                    return false;
+                })
+                $(".select-reset").on("click",function(){
+                    $(".select-list .reset").addClass("select-active").siblings().removeClass("select-active")
+                    return false;
+                })
+            }
+        },
+        _recruitment:{
+            init:function(){
+                page._recruitment._btnClick()
+            },
+            _btnClick:function(){
+                $(".rec-more").on("click",function(){
+                    var _flag = $(this).data("num");
+                    $(".rec-list-box").hide();
+                    $(".rec-box"+_flag).show();
+                    $(window).scrollTop(0);
+                });
+                $(".backIcon").on("click",function(){
+                    $(".rec-list-box").show();
+                    $(".rec-boxpub").hide();
+                    $(window).scrollTop(0);
+                })
+            }
+        },
         resize: function () {
             pageH = $(window).height();
             pageW = $(window).width();
