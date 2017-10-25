@@ -432,6 +432,7 @@ body img{
     font-size:0.5973rem;
     font-weight: bold;
     margin-bottom:1.4933rem;
+    white-space: nowrap;
 }
 .code-icon{
     display: inline-block;
