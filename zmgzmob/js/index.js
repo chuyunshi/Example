@@ -145,13 +145,13 @@ $(document).ready(function(){
                 $(".news-select").on("click",function(){
                     $(".search-box").show();
                     $(window).scrollTop(0);
-                    /*$('.news_list_box').on("touchmove", function (e) {
+                    $('body').on("touchmove", function (e) {
                         e.preventDefault();
-                    })*/
+                    })
                 })
                 $(".search-box").on("click",function(){
                     $(this).hide();
-                    //$('body').off("touchmove");
+                    $('body').off("touchmove");
                 })
             },
 
