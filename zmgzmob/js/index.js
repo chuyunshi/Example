@@ -145,15 +145,17 @@ $(document).ready(function(){
                 $(".news-select").on("click",function(){
                     $(".search-box").show();
                     $(window).scrollTop(0);
-                    $('body').on("touchmove", function (e) {
+                    /*$('.news_list_box').on("touchmove", function (e) {
                         e.preventDefault();
-                    })
+                    })*/
                 })
                 $(".search-box").on("click",function(){
                     $(this).hide();
-                    $('body').off("touchmove");
+                    //$('body').off("touchmove");
                 })
             },
+
+
             _select_btn:function(){
                $(".select-list li").on("click",function(){
                    $(this).addClass("select-active").siblings().removeClass("select-active")
