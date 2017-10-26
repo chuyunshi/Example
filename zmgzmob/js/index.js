@@ -31,7 +31,82 @@ $(document).ready(function(){
                 page.loading._preload();
             },
             _preload:function(){
-                console.log(123123);
+                var num = 0;
+                var _load_zhen =  $(".load_zhen")
+                var manifest = [
+                    './img/loading/1.png','./img/loading/pan.png','./img/loading/zhen.png',
+                    './img/move_line.png','./img/touch_move.png','./img/turn.png',
+                    './img/p1/bg.jpg',
+                    './img/p5/1.jpg','./img/p5/2.jpg',
+                    './img/p7/bg.jpg','./img/p7/1.jpg',
+                ];
+                for(var b=1;b<=4;b++){
+                    manifest[manifest.length] = './img/p1/0' + b + '.jpg';
+                    manifest[manifest.length] = './img/p2/' + b + '.jpg';
+
+                }
+                for(var c=1;c<=5;c++){
+                    manifest[manifest.length] = './img/p2/0' + c + '.jpg';
+                }
+                for(var d=1;d<=2;d++){
+                    manifest[manifest.length] = './img/p3/' + d + '.jpg';
+                    manifest[manifest.length] = './img/p4/' + d + '.jpg';
+                    manifest[manifest.length] = './img/p6/' + d + '.jpg';
+                }
+
+                for(var i= 1;i<=7;i++){
+                    manifest[manifest.length] = './img/menu/' + i + '.png';
+                    manifest[manifest.length] = './img/menu/0' + i + '.png';
+                }
+                for(var j= 1;j<=6;j++){
+                    manifest[manifest.length] = './img/loading/' + j + '.png';
+                }
+                for (var a = 1; a <= 50; a++) {
+                    manifest[manifest.length] = './img/car_360_0/' + a + '.png';
+                    manifest[manifest.length] = './img/car_360_1/' + a + '.png';
+                    manifest[manifest.length] = './img/car_360_2/' + a + '.png';
+                    manifest[manifest.length] = './img/car_360_3/' + a + '.png';
+                }
+
+                var queue = new createjs.LoadQueue(false);
+                // 关键！----设置并发数
+                queue.setMaxConnections(10);
+                // 关键！---一定要将其设置为 true, 否则不起作用
+                queue.maintainScriptOrder = true;
+
+                queue.on("complete", function () {
+                    console.log("加载完成!!!");
+                    $(".loading").addClass("fadeOut");
+                    $(".swiper-container1").show();
+                    page.guide.init();
+
+                    page.BGM1.pause();
+
+                    $("#auto_play_pic,.swiper-button").on("touchstart",function(){
+                        page.BGM.play();
+                    });
+
+                    setTimeout(function () {
+                        $(window).scrollTop(1);
+                    }, 0);
+                    page.BGM.play();
+                    wx.getNetworkType({
+                        success: function (res) {
+                            page.BGM.play();
+                        }
+                    });
+
+                });
+                queue.on("progress", function () {
+                    var progress = queue.progress * 100;
+                    progress = Math.floor(progress);
+                    _load_zhen.css("transform","rotateZ("+(progress*2.55)+"deg)");
+                    console.log(progress)
+
+
+
+                });
+                queue.loadManifest(manifest);
             }
         },
         //所有页菜单点击集合
@@ -61,6 +136,11 @@ $(document).ready(function(){
                     $(".menu-list"+_num).show().siblings().hide();
                     $(this).addClass("active").siblings().removeClass("active");
                     event.stopPropagation();
+                })
+                //二级菜单点击
+                $(".menu-list li").on("click",function(event){
+                    $(".menu-list li").removeClass("nav_this");
+                    $(this).addClass("nav_this");
                 })
                 //非按钮部分点击关闭菜单栏
                 $(".menu-list-box").on("click",function(){
