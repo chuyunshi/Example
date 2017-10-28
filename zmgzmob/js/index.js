@@ -169,7 +169,7 @@ $(document).ready(function(){
                         arr[i] = $(".select-active").eq(i).text()
                     }
                     console.log(arr)
-                    return false;
+
                 })
                 $(".select-reset").on("click",function(){
                     $(".select-list .reset").addClass("select-active").siblings().removeClass("select-active")
