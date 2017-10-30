@@ -5,6 +5,9 @@
 
 $(window).resize(function () {
     aaa();
+    bbb();
+    ccc();
+    ddd();
 
 });
 //堆叠条形图
@@ -132,14 +135,10 @@ function aaa(){
     columnar2.setOption(option);
 };
 
-aaa();
-
-
-
 
 
 //嵌套环形图
-(function(){
+function bbb(){
 
     var pie2 = echarts.init(document.getElementById("pie2"));
 
@@ -203,11 +202,11 @@ aaa();
         ]
     };
     pie2.setOption(option);
-})();
+};
 
 
 //饼状图
-(function(){
+function ccc(){
 
     var pie3 = echarts.init(document.getElementById("pie3"));
 
@@ -250,11 +249,11 @@ aaa();
     };
 
     pie3.setOption(option);
-})();
+};
 
 
 //南丁格尔玫瑰图
-(function(){
+function ddd(){
 
     var pie4 = echarts.init(document.getElementById("pie4"));
 
@@ -309,4 +308,10 @@ aaa();
     };
 
     pie4.setOption(option);
-})();
+};
+
+
+aaa();
+bbb();
+ccc();
+ddd();
