@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>rem换算</title>
+</head>
+<body>
+<div class=box>
+	<input class="input1" type="text">
+	<button class="btn1">换算</button>
+	<input class="input2" type="text" name="">
+</div>
+
+<div class=box>
+	<input class="input3" type="text">
+	<button class="btn2">换算</button>
+	<input class="input4" type="text" name="">
+</div>
+</br>
+</br>
+
+<div class=box>
+	<input class="input5" type="text">
+	<button class="btn3">换算</button>
+	<input class="input6" type="text" name="">
+</div>
+<div class=box>
+	<input class="input7" type="text">
+	<button class="btn4">换算</button>
+	<input class="input8" type="text" name="">
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="zepto.min.1.js"></script>
+<script type="text/javascript">
+	var num1;
+	var num2;
+	var num3;
+	var num4;
+	$('.btn1').click(function(){
+		num1 = $(".input1").val();
+		//num2 = num3/(23.4375*2.5);
+		num2 = num1/23.4375;
+		num2 = num2.toFixed(4);
+		$(".input1").val("");
+		$(".input2").val("width:"+num2+"rem;");
+
+	})
+	$('.btn2').click(function(){
+		num3 = $(".input3").val();
+		num4 = num3/23.4375;
+		num4 = num4.toFixed(4);
+		$(".input3").val("");
+		$(".input4").val("height:"+num4+"rem;");
+	})
+
+	$('.btn3').click(function(){
+		num3 = $(".input5").val();
+		num4 = num3/25.875;
+		num4 = num4.toFixed(4);
+		$(".input5").val("");
+		$(".input6").val("width:"+num4+"rem;");
+
+	})
+
+	$('.btn4').click(function(){
+		num3 = $(".input7").val();
+		num4 = num3/25.875;
+		num4 = num4.toFixed(4);
+		$(".input7").val("");
+		$(".input8").val("height:"+num4+"rem;");
+
+	})
+
+</script>

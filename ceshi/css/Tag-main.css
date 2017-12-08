@@ -1,0 +1,187 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body,html{
+    font-family: 'microsoft yahei',Sans-Serif;
+}
+ul li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+.hide{
+    display: none;
+}
+.show{
+    display: block;
+}
+.ab{
+    position: absolute;
+}
+.re{
+    position: relative;
+}
+.fixed{
+    position: fixed;
+}
+.hidden{
+    overflow: hidden;
+}
+.v-top{
+    vertical-align: top;
+}
+.v-middle{
+    vertical-align: middle;
+}
+.block{
+    display: block;
+}
+.indent{
+    text-indent: 28px;
+}
+.t-center{
+    text-align: center;
+}
+.color-blue{
+    color: #185490!important;
+}
+
+@-webkit-keyframes x_y{
+    0% {
+        -webkit-transform: translateY(0px) ;
+        opacity:1;
+    }
+    50%{
+        -webkit-transform: translateY(10px) ;
+        opacity:0.3;
+    }
+    100% {
+        -webkit-transform: translateY(0px) ;
+        opacity:1;
+    }
+}
+.x_y{
+    -webkit-animation: 2s x_y linear infinite;
+}
+
+
+/****************  主体内容 开始 ********************/
+.h-wrap{
+    width:100%;
+}
+.wrap-min{
+    margin:4%;
+    padding-bottom: 50px;
+}
+.naTank{
+    font-size: 0.6827rem;
+    color: #999999;
+}
+.badMit{
+    font-size: 0.8533rem;
+    color: #666;
+    padding:4px 0;
+}
+.mitRite{
+    font-size: 0.5547rem;
+    color: #666666;
+    white-space: nowrap;
+}
+.naData{
+    font-size: 0.5547rem;
+    color: #999;
+    padding:15px 0;
+}
+.badMit-img{
+    display: block;
+    width:100%;
+    background: #eeeeee;
+}
+.badMit-line{
+    margin: 40px 0 30px;
+    border-bottom: 1px solid #e6e6e6;
+}
+.badPrve{
+    width:50px;
+    height: 40px;
+    top:-24px;
+    left:41%;
+    background: #fff;
+}
+.badPrve-img{
+    width:15px;
+    height: 20px;
+    padding: 10px 20px;
+}
+.badMit-info{
+    font-size: 0.5547rem;
+    color: #999;
+    line-height: 30px;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+.badMit-info-list{
+    margin-bottom: 10px!important;
+}
+.check-guest{
+    font-size: 0.6400rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.goTank{
+    font-size: 0.5547rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #6c80a1;
+    width:100%;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 40px;
+    left:0;
+    bottom: 0;
+}
+/****  报告提组 开始 ******/
+.badMit-report{
+    margin-top: 30px;
+}
+.badMit-role{
+    font-size: 0.8533rem;
+    font-weight: 600;
+}
+.badMit-team{
+    margin-top: 20px;
+}
+.badMit-member{
+    font-size: 0.8533rem;
+    color: #333;
+}
+.badMit-iden{
+    font-size: 0.5973rem;
+    color: #999;
+    line-height: 30px;
+}
+.report-mar-line{
+    margin: 20px 0 30px;
+}
+.badMit-editor{
+    font-size: 0.6827rem;
+    color: #333;
+    line-height: 30px;
+}
+.editor-team{
+    padding: 30px 0;
+}
+
+/****************  主体内容 结束 ********************/
+
+
+
+
+
+
+
+
+
+

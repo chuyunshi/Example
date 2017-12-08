@@ -1,0 +1,45 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*新闻wiki样式*/
+.article-wiki{font-size:18px;font-size:1.8rem;color:#333333; line-height:2;word-break:break-all;}
+.article-wiki h2{ font-size:24px;font-weight:bold; background-color:#e8f6fd; padding:0 10px;}
+.article-wiki h3{ font-size:20px;font-weight:bold; text-indent:15px;}
+.article-wiki h4{font-size:18px;font-weight:bold;text-indent:20px;}
+.article-wiki table{ border:1px solid #CCC;border-collapse:collapse;}
+.article-wiki table th{border:1px solid #CCC; padding:5px 0; background:#f0f1f2;}
+.article-wiki table td{border:1px solid #CCC;}
+.article-wiki .emptytable,.article-wiki .emptytable td,.article-wiki .emptytable th{ border:0; background:none;}
+
+.article-wiki p{ margin:25px 0; }
+.article-wiki ul{ list-style:disc;margin-left:20px;}
+.article-wiki li{margin-left:25px;}
+.article-wiki ol{ list-style:decimal;margin-left:20px;}
+.article-wiki i{ font-style:oblique;}
+.article-wiki hr{ border:none;border-bottom:1px solid #CCC; height:0;}
+.article-wiki a {color:#0671b6; border-bottom:2px solid #eaeaea; color:#333;}
+.article-wiki a:hover{ text-decoration:none;border-bottom-color:#37A4EE; color:#37A4EE;}
+.article-wiki a.external{ color:#72a1c0;}
+.article-wiki img{max-width:95%; height:auto; width:expression(this.width > 700 ? "700px" : this.width); margin:10px;}
+
+.article-wiki .thumb { margin-bottom: 0.5em; border-style: solid; border-color: White; width: auto;}
+.article-wiki .thumb div { border:1px solid #cccccc; padding: 3px !important; background-color:#f9f9f9; font-size: 94%; text-align: center; overflow: hidden;}
+.article-wiki .thumb img {margin-bottom:3px;background:#FFFFFF;}
+.article-wiki .thumb .thumbcaption { border: none; text-align: left;line-height: 1.4em;padding: 0.3em 0.1em 0.1em 0.1em;}
+.article-wiki .tright {clear: right; float: right; margin: 0.5em 0 0.8em 1.4em;}
+
+/*状态*/
+.article-status-queued{color:red}
+.article-status-published{color:blue}
+.article-status-discard{color:gray}
+
+#messages{
+    border:1px #fa8700 solid;
+    padding:5px;
+    background-color:#fee3c3;
+}
+
+/*488/16*/
+@media screen and (max-width: 30.5em) {
+    .article-wiki p{ line-height:1.8;}
+}
