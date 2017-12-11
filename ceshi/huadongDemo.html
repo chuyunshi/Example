@@ -88,6 +88,11 @@
            _move:{
                init:function(){
                    page._move._touch();
+                   /*
+                   注意看这段注释
+                   请考虑横竖屏切换
+                   此demo没有写横竖屏切换的方法
+                   */
                },
                _touch:function(){
                    var el =$(".boxsonson");
@@ -95,7 +100,7 @@
                    var boxsonHeight = $(".boxson").height();
                    var boxsonsonHeight = el.height();
                    var _height = boxsonsonHeight - boxsonHeight;
-                   console.log(_height);
+                   //console.log(_height);
                    el.on("touchstart", function (e) {
                        start_y = e.touches[0].pageY-length_y;
                        e.preventDefault();
@@ -112,8 +117,8 @@
                            length_y=-_height
                        }
                        el.css('top',length_y+"px");
-                       console.log(length_y);
-                       //e.preventDefault();
+                       //console.log(length_y);
+                       e.preventDefault();
                    }
                }
            },
