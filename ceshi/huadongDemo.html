@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>模块滑动</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .box{
+            width:100%;
+            height:1500px;
+        }
+        .boxson{
+            position: relative;
+            background: #999;
+            top:200px;
+            height:200px;
+            width:100%;
+            overflow: hidden;
+        }
+        .boxsonson{
+            position: absolute;
+            text-align: center;
+            width:100%;
+            top:0;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="boxson">
+        <div class="boxsonson">
+            用以撑开的文字1<br/>
+            用以撑开的文字2<br/>
+            用以撑开的文字3<br/>
+            用以撑开的文字4<br/>
+            用以撑开的文字5<br/>
+            用以撑开的文字6<br/>
+            用以撑开的文字7<br/>
+            用以撑开的文字8<br/>
+            用以撑开的文字9<br/>
+            用以撑开的文字0<br/>
+            用以撑开的文字1<br/>
+            用以撑开的文字2<br/>
+            用以撑开的文字3<br/>
+            用以撑开的文字4<br/>
+            用以撑开的文字5<br/>
+            用以撑开的文字6<br/>
+            用以撑开的文字7<br/>
+            用以撑开的文字8<br/>
+            用以撑开的文字9<br/>
+            用以撑开的文字0<br/>
+            用以撑开的文字1<br/>
+            用以撑开的文字2<br/>
+            用以撑开的文字3<br/>
+            用以撑开的文字4<br/>
+            用以撑开的文字5<br/>
+            用以撑开的文字6<br/>
+            用以撑开的文字7<br/>
+            用以撑开的文字8<br/>
+            用以撑开的文字9<br/>
+            用以撑开的文字0<br/>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script src="js/zepto.min.1.js"></script>
+<script>
+    $(document).ready(function(){
+        var pageH,pageW;
+        page= {
+            init: function () {
+                //阻止body滑动
+                $('body').on("touchmove", function (e) {
+                    //e.preventDefault();
+                });
+                $(window).resize(function () {
+                    page.resize();
+                });
+
+                page.resize();
+                page._move.init();
+
+            },
+
+           _move:{
+               init:function(){
+                   page._move._touch();
+               },
+               _touch:function(){
+                   var el =$(".boxsonson");
+                   var start_y= 0,length_y=0;
+                   var boxsonHeight = $(".boxson").height();
+                   var boxsonsonHeight = el.height();
+                   var _height = boxsonsonHeight - boxsonHeight;
+                   console.log(_height);
+                   el.on("touchstart", function (e) {
+                       start_y = e.touches[0].pageY-length_y;
+                       e.preventDefault();
+                   });
+                   el.on("touchmove", function (e) {
+                       _height>0?_touchMove(e):'';
+                   });
+                   function _touchMove(e){
+                       length_y = e.touches[0].pageY - start_y;
+
+                       if(length_y>=0){
+                           length_y=0;
+                       }
+                       if(length_y<=-_height){
+                           length_y=-_height
+                       }
+                       el.css('top',length_y+"px");
+                       console.log(length_y);
+                       e.preventDefault();
+                   }
+                   el.on("touchend", function (e) {
+
+                   });
+               }
+           },
+            resize: function () {
+                pageH = $(window).height();
+                pageW = $(window).width();
+                $(".page").width(pageW).height(pageH);
+            }
+        };
+        page.init();
+    });
+</script>
+</body>
+</html>
