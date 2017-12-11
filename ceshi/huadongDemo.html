@@ -79,19 +79,12 @@
         var pageH,pageW;
         page= {
             init: function () {
-                //阻止body滑动
-                $('body').on("touchmove", function (e) {
-                    //e.preventDefault();
-                });
                 $(window).resize(function () {
                     page.resize();
                 });
-
                 page.resize();
                 page._move.init();
-
             },
-
            _move:{
                init:function(){
                    page._move._touch();
@@ -112,7 +105,6 @@
                    });
                    function _touchMove(e){
                        length_y = e.touches[0].pageY - start_y;
-
                        if(length_y>=0){
                            length_y=0;
                        }
@@ -121,11 +113,8 @@
                        }
                        el.css('top',length_y+"px");
                        console.log(length_y);
-                       e.preventDefault();
+                       //e.preventDefault();
                    }
-                   el.on("touchend", function (e) {
-
-                   });
                }
            },
             resize: function () {
