@@ -8,17 +8,38 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title></title>
     <style>
-        *{
-            margin:0;
-            padding:0;
-        }
-        img {
-            width:100%;
-        }
+
     </style>
 </head>
 <body>
-<img src="123.jpg" alt=""/>
-<img src="1231.jpg" alt=""/>
+<p class="hh"></p>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var pageH,pageW;
+        page= {
+            init: function () {
+                $(window).resize(function () {
+                    page.resize();
+                });
+
+                page.resize();
+
+
+            },
+
+
+            resize: function () {
+                pageH = $(window).height();
+                pageW = $(window).width();
+               
+                $(".hh").text("宽："+pageW+"px;高："+pageH+"px")
+            }
+        };
+        page.init();
+    });
+
+
+</script>
 </body>
 </html>
