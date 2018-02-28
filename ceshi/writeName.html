@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>手写签名</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="animate.min.css">
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .re{
+            position: relative;
+        }
+        .ab{
+            position: absolute;
+        }
+        .fx{
+            position: fixed;
+        }
+        .hide{
+            display: none;
+        }
+        .page{
+            overflow:hidden;
+        }
+        .writeBody{
+            width:100%;
+            height:75%;
+            /*background: url("/Content/assets/img/bgwrite.jpg") no-repeat center;*/
+            background-size:cover;
+        }
+        .clickContent{
+            width:100%;
+            height:25%;
+            background: rgba(0,0,0,0.8);
+        }
+        .clickBody{
+            height:2rem;
+            width:100%;
+
+        }
+        .leftBtn{
+            color:#fff;
+            font-size:0.8rem;
+            height:2rem;
+            line-height: 2rem;
+            padding:0 1rem;
+            left:0;
+            top:0;
+        }
+        .leftBtn:active{
+            color:#999;
+        }
+        .rightBtn{
+            color:#fff;
+            font-size:0.8rem;
+            height:2rem;
+            line-height: 2rem;
+            padding:0 1rem;
+            right:0;
+            top:0;
+        }
+        .rightBtn:active{
+            color:#999;
+        }
+        .upimg{
+            width:8rem;
+            height:2rem;
+            color:#fff;
+            font-size:0.9rem;
+            text-align: center;
+            line-height:2rem;
+            background: #04BE02;
+            border-radius: 0.3rem;
+            left:4rem;
+            top:50%;
+            margin-top: -0.5rem;
+        }
+        .upimg:after {
+            content: " ";
+            width: 200%;
+            height: 200%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+            box-sizing: border-box;
+            border-radius: 10px;
+        }
+        .upimg:active {
+            color: rgba(255, 255, 255, 0.4);
+            background-color: #039702;
+        }
+        .yesdialog{
+            background: rgba(0,0,0,0.4);
+            top:0;
+        }
+        .weui_dialog {
+            position: fixed;
+            z-index: 5000;
+            width: 85%;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            background-color: #FAFAFC;
+            text-align: center;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .weui_dialog .weui_dialog_hd {
+            padding: 10px;
+        }
+        .weui_dialog_title {
+            font-weight: 400;
+            font-size: 17px;
+        }
+        .weui_dialog .weui_dialog_bd {
+            text-align: left;
+        }
+        .weui_dialog_ft {
+            position: relative;
+            line-height: 42px;
+            margin-top: 20px;
+            font-size: 17px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+        }
+        .primary{
+            border-left: 1px solid #D5D5D6;
+        }
+        .weui_dialog_ft a {
+            position: relative;
+        }
+        .weui_btn_dialog.default {
+            color: #353535;
+        }
+        .weui_btn_dialog.primary {
+            color: #0BB20C;
+        }
+        .weui_dialog_ft a {
+            display: block;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            color: #3CC51F;
+            text-decoration: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        .weui_dialog_bd {
+            padding: 0 20px;
+            font-size: 15px;
+            color: #888;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        .weui_dialog_ft a:active {
+            background-color: #EEEEEE;
+        }
+        .weui_dialog_ft:after {
+            content: " ";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 1px;
+            border-top: 1px solid #D5D5D6;
+            color: #D5D5D6;
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+        }
+        #myCanvas{
+            width:100%;
+            height:100%;
+        }
+        .imgBox{
+            top:0;
+            background: rgba(0,0,0,0);
+        }
+        .bgcolor{
+
+        }
+        .loadImgBox{
+            top:0%;
+            background: #fff;
+        }
+        .returnTrue{
+            width:7rem;
+
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="page ">
+    <div class="writeBody re">
+        <canvas id="myCanvas" class="ab"></canvas>
+
+    </div>
+
+    <div class="clickContent re">
+        <div class="clickBody re">
+            <div class="leftBtn ab clear">
+                清除
+            </div>
+            <div class="rightBtn ab">
+                预览
+            </div>
+        </div>
+        <div class="ab upimg">
+            保存并确定
+        </div>
+    </div>
+
+    <div class="page imgBox fx hide">
+        <div class="ab loadImgBox">
+            <img id="loadimg" src="" alt="">
+        </div>
+
+    </div>
+    <div class="fx yesdialog page animated fadeIn hide">
+        <div class="weui_dialog tishi ">
+            <div class="weui_dialog_hd">
+                <strong class="weui_dialog_title">确认并提交</strong>
+            </div>
+            <div class="weui_dialog_bd">请确认无误后再提交，提交后将承担相应的法律责任！</div>
+            <div class="weui_dialog_ft">
+                <a href="javascript:;" class="weui_btn_dialog default">取消</a>
+                <a href="javascript:;" class="weui_btn_dialog primary yes">确定</a>
+            </div>
+        </div>
+        <div class="weui_dialog returnTrue animated fadeIn hide">
+            <div class="weui_dialog_hd" style="padding:1.4rem 0;">
+                <strong class="weui_dialog_title" >提交成功</strong>
+
+            </div>
+            <div class="weui_dialog_ft" style="margin-top:0;">
+                <a href="javascript:;" class="weui_btn_dialog primary reload">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="zepto.min.1.js"></script>
+<script src="fx.js"></script>
+<script src="event.js"></script>
+<script src="rem.js"></script>
+<script>
+$(function(){
+    $(document).ready(function(){
+        var pageH,pageW;
+        var _canvas = document.getElementById("myCanvas");
+        var el = $("#myCanvas");
+        var ctx = _canvas.getContext("2d");
+        page= {
+            init: function () {
+                ////阻止body滑动
+                $('body').on("touchmove", function (e) {
+                    e.preventDefault();
+                });
+                $(window).resize(function () {
+                    page.resize();
+                });
+                page.resize();
+                page._write.init();
+            },
+            _write: {
+                init: function () {
+                    page._write._click();
+                    page._write.write_touch();
+                    page._write.clear();
+                },
+                _click:function(){
+                    $(".upimg").on("click",function(){
+                        page._write.save();
+                        setTimeout(function(){
+                            $(".yesdialog").show()
+                        },1000)
+
+                    })
+                    $(".default").on("click",function(){
+                        $(".yesdialog").hide()
+                        page._write.closeImg();
+                    })
+                    $(".rightBtn").on("click",function(){
+                        page._write.save();
+                    });
+                    $(".imgBox").on("click",function(){
+                        page._write.closeImg();
+                    })
+                    $(".yes").on("click",function(){
+                        $(".tishi").hide();
+                        $(".returnTrue").show();
+                    })
+                    $(".reload").on("click",function(){
+                        document.location.reload();
+                    })
+
+                },
+                write_touch:function(){
+                    var _temp=0;
+                    el.on("touchstart",function(e){
+                        var touch = e.touches[0];
+                        ctx.beginPath();
+                        ctx.moveTo(touch.pageX - _canvas.offsetLeft, touch.pageY - _canvas.offsetTop);
+
+                    });
+                    el.on("touchmove",function(e){
+                        var touch = e.touches[0];
+                        var x=touch.pageX - _canvas.offsetLeft;
+                        var y=touch.pageY - _canvas.offsetTop;
+                        ctx.strokeStyle='#000';
+                        ctx.lineWidth=2;
+                        //画
+                        ctx.lineTo(x, y);
+                        ctx.stroke();
+
+                    });
+                    el.on("touchend",function(){
+
+                    });
+                },
+                clear:function(){
+                    $(".clear").click(function(){
+                        ctx.clearRect(0, 0, pageW, pageH*0.75);
+                    })
+
+                },
+                save:function(){
+                    var _img = document.getElementById("loadimg");
+                    _img.src = _canvas.toDataURL();
+                    $(".imgBox").show().anim({
+                        "background":"rgba(0,0,0,1)"
+                    },0.6);
+                    $(".loadImgBox").anim({
+                        "top":"12.5%"
+                    },0.6);
+                },
+                closeImg:function(){
+                    $(".imgBox").anim({
+                        "background":"rgba(0,0,0,0)"
+                    },0.4,"",function(){
+                        $(".imgBox").hide()
+                    });
+                    $(".loadImgBox").anim({
+                        "top":"0%"
+                    },0.4);
+                }
+            },
+
+            resize: function () {
+                pageH = $(window).height();
+                pageW = $(window).width();
+                _canvas.height=pageH*0.75;
+                _canvas.width=pageW;
+                $(".page").width(pageW).height(pageH);
+            }
+        };
+        page.init();
+    });
+})
+</script>
+</body>
+</html>
